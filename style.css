@@ -1,0 +1,690 @@
+/* =====================================================
+   STOLEN FRIDGE TRIPTYCH - Digital Puzzle Experience
+   By Avery Lake
+   ===================================================== */
+
+:root {
+    --bg-dark: #0a0a0a;
+    --bg-panel: #111111;
+    --text-primary: #f5f5f5;
+    --text-secondary: #888;
+    --text-quote: #e8d5b0;
+    --accent-warm: #d4a574;
+    --accent-cool: #7a8b99;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+
+    /* Timing */
+    --transition-slow: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+}
+
+/* Subtle film grain overlay */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* =====================================================
+   INTRO SCREEN
+   ===================================================== */
+
+.intro-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 2rem;
+    transition: opacity var(--transition-slow), visibility var(--transition-slow);
+}
+
+.intro-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.intro-content {
+    max-width: 540px;
+    text-align: center;
+}
+
+.intro-label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.intro-content h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.8rem, 7vw, 3rem);
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.intro-content .artist {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+}
+
+.intro-content blockquote {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+    font-style: italic;
+    line-height: 1.9;
+    color: var(--text-quote);
+    margin-bottom: 2rem;
+    padding: 1.5rem 2rem;
+    border-left: 2px solid var(--accent-warm);
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.intro-content blockquote cite {
+    display: block;
+    font-size: 0.8rem;
+    font-style: normal;
+    color: var(--text-secondary);
+    margin-top: 1.25rem;
+    letter-spacing: 0.02em;
+}
+
+.intro-content .instructions {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+}
+
+.start-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bg-dark);
+    background: var(--text-primary);
+    border: none;
+    padding: 1.1rem 3.5rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+}
+
+.start-btn:hover {
+    background: var(--accent-warm);
+    transform: translateY(-2px);
+}
+
+.start-btn:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+   PUZZLE CONTAINER
+   ===================================================== */
+
+.puzzle-container {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    transition: opacity 0.5s ease;
+}
+
+.puzzle-container.hidden {
+    display: none;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.5rem 1rem;
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.header h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.panel-indicator {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--accent-warm);
+    opacity: 0.8;
+}
+
+/* Progress dots */
+.progress-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-subtle);
+    transition: all var(--transition-medium);
+}
+
+.dot.active {
+    background: var(--accent-warm);
+}
+
+.dot.complete {
+    background: var(--text-secondary);
+}
+
+/* =====================================================
+   EXPERIENCE AREA - PANELS
+   ===================================================== */
+
+.experience-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.panel {
+    position: absolute;
+    width: min(100%, 340px);
+    aspect-ratio: 2/3;
+    max-height: min(calc(100vh - 180px), calc(100dvh - 180px));
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(50px);
+    pointer-events: none;
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+/* Ensure aspect ratio is maintained when height-constrained */
+@supports (aspect-ratio: 2/3) {
+    .panel {
+        width: auto;
+        height: min(calc(100vh - 180px), calc(100dvh - 180px));
+        max-width: min(100%, 500px);
+    }
+}
+
+.panel.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.panel.exiting {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+
+/* Panel titles */
+.panel-title {
+    position: absolute;
+    bottom: 3rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--text-primary);
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+    z-index: 15;
+    pointer-events: none;
+}
+
+.panel-subtitle {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+    z-index: 15;
+    pointer-events: none;
+}
+
+.panel.complete .panel-title,
+.panel.complete .panel-subtitle {
+    opacity: 1;
+}
+
+/* Quote layer beneath puzzle */
+.quote-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    background: var(--bg-dark);
+    z-index: 1;
+}
+
+.quote-layer p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+    font-style: italic;
+    line-height: 1.9;
+    color: var(--text-quote);
+    text-align: center;
+    max-width: 90%;
+    opacity: 0.4;
+    transition: opacity var(--transition-slow);
+}
+
+.panel.complete .quote-layer p {
+    opacity: 1;
+}
+
+/* Puzzle grid overlay */
+.puzzle-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    z-index: 10;
+}
+
+/* Individual puzzle pieces */
+.puzzle-piece {
+    position: relative;
+    cursor: pointer;
+    background-size: 600% 800%;
+    transition: opacity var(--transition-medium), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.puzzle-piece::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}
+
+.puzzle-piece:hover:not(.removed) {
+    filter: brightness(1.08);
+    z-index: 2;
+}
+
+.puzzle-piece:active:not(.removed) {
+    transform: scale(0.98);
+}
+
+.puzzle-piece.removed {
+    opacity: 0;
+    transform: scale(0.7) rotate(5deg) translateY(20px);
+    pointer-events: none;
+}
+
+/* Panel-specific images */
+#grid-past .puzzle-piece {
+    background-image: url('fridge_past.jpg');
+}
+
+#grid-present .puzzle-piece {
+    background-image: url('fridge_present.jpg');
+}
+
+#grid-future .puzzle-piece {
+    background-image: url('fridge_future.jpg');
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer {
+    padding: 1rem 0.5rem 0.5rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.land-acknowledgment {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 auto;
+    opacity: 0.7;
+}
+
+/* =====================================================
+   COMPLETION SCREEN
+   ===================================================== */
+
+.completion-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 200;
+    padding: 2rem;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-slow), visibility var(--transition-slow);
+}
+
+.completion-screen.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.completion-screen.hidden {
+    display: none;
+}
+
+.completion-content {
+    max-width: 560px;
+    text-align: center;
+}
+
+.completion-content h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.full-quote {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.15rem, 3.5vw, 1.4rem);
+    font-style: italic;
+    line-height: 1.9;
+    color: var(--text-quote);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-left: 2px solid var(--accent-warm);
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.full-quote cite {
+    display: block;
+    font-size: 0.8rem;
+    font-style: normal;
+    color: var(--text-secondary);
+    margin-top: 1.25rem;
+}
+
+/* Triptych Gallery */
+.triptych-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem 0;
+    padding: 0 1rem;
+}
+
+.triptych-image {
+    flex: 1;
+    max-width: 140px;
+    text-align: center;
+}
+
+.triptych-image img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border-subtle);
+    display: block;
+}
+
+.triptych-image span {
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+.reflection {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 2;
+    margin-bottom: 2.5rem;
+}
+
+.completion-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.cta-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bg-dark);
+    background: var(--text-primary);
+    border: none;
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-medium);
+}
+
+.cta-btn:hover {
+    background: var(--accent-warm);
+    transform: translateY(-2px);
+}
+
+.restart-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    padding: 0.75rem 2rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+}
+
+.restart-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
+.secondary-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    padding: 0.85rem 2rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-medium);
+}
+
+.secondary-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
+.completion-content .credit {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+}
+
+.completion-content .credit a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.completion-content .credit a:hover {
+    color: var(--accent-warm);
+}
+
+
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.puzzle-container {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.completion-content>* {
+    animation: fadeInUp 0.6s ease backwards;
+}
+
+.completion-content h2 {
+    animation-delay: 0.1s;
+}
+
+.completion-content .full-quote {
+    animation-delay: 0.2s;
+}
+
+.completion-content .reflection {
+    animation-delay: 0.3s;
+}
+
+.completion-content .completion-actions {
+    animation-delay: 0.4s;
+}
+
+.completion-content .credit {
+    animation-delay: 0.5s;
+}
+
+/* Touch feedback */
+@media (hover: none) {
+    .puzzle-piece:active:not(.removed) {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (min-width: 768px) {
+    .puzzle-container {
+        padding: 1.5rem 2rem;
+    }
+
+    .panel {
+        max-width: min(100%, 450px);
+    }
+
+    .header h2 {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .panel {
+        max-width: min(100%, 500px);
+    }
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stolen Fridge Triptych | Avery Lake</title>
+    <meta name="description"
+        content="An interactive digital art experience exploring the forced erasure of Sumas Lake. Remove pieces to reveal the truth beneath.">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://fridge.averylakeofficial.com">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fridge.averylakeofficial.com">
+    <meta property="og:title" content="Stolen Fridge Triptych | Avery Lake">
+    <meta property="og:description"
+        content="An interactive digital art experience exploring the forced erasure of Sumas Lake. Remove pieces to reveal the truth beneath.">
+    <meta property="og:image" content="https://fridge.averylakeofficial.com/og-image.png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:site_name" content="Avery Lake">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://fridge.averylakeofficial.com">
+    <meta name="twitter:title" content="Stolen Fridge Triptych | Avery Lake">
+    <meta name="twitter:description"
+        content="An interactive digital art experience exploring the forced erasure of Sumas Lake. Remove pieces to reveal the truth beneath.">
+    <meta name="twitter:image" content="https://fridge.averylakeofficial.com/og-image.png">
+
+    <!-- Additional metadata -->
+    <meta name="author" content="Avery Lake">
+    <meta name="keywords"
+        content="Avery Lake, Stolen Fridge Triptych, Sumas Lake, Indigenous art, digital art, interactive art, Semá:th First Nation">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="intro-screen">
+        <div class="intro-content">
+            <span class="intro-label">An Interactive Digital Experience</span>
+            <h1>Stolen Fridge Triptych</h1>
+            <p class="artist">by Avery Lake</p>
+
+            <p class="instructions">
+                Touch the panels to remove pieces.<br>
+                Watch as erasure becomes revelation.
+            </p>
+
+            <button id="start-btn" class="start-btn">Begin</button>
+        </div>
+    </div>
+
+    <!-- Main Puzzle Experience -->
+    <div id="puzzle-container" class="puzzle-container hidden">
+        <header class="header">
+            <div class="header-left">
+                <h2>Stolen Fridge Triptych</h2>
+                <span class="panel-indicator" id="panel-indicator">Past</span>
+            </div>
+            <div class="progress">
+                <span class="progress-dots" id="progress-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </span>
+            </div>
+        </header>
+
+        <main class="experience-area">
+            <!-- Panel 1: Past -->
+            <div class="panel active" id="panel-past" data-panel="past">
+                <div class="quote-layer">
+                    <p>"The lake was, I don't know what you'd call it, our fridge I guess."</p>
+                </div>
+                <div class="puzzle-grid" id="grid-past"></div>
+                <div class="panel-title">The Living Fridge</div>
+                <div class="panel-subtitle">Past</div>
+            </div>
+
+            <!-- Panel 2: Present -->
+            <div class="panel" id="panel-present" data-panel="present">
+                <div class="quote-layer">
+                    <p>"It meant everything to our people."</p>
+                </div>
+                <div class="puzzle-grid" id="grid-present"></div>
+                <div class="panel-title">The Deserted Fridge</div>
+                <div class="panel-subtitle">Present</div>
+            </div>
+
+            <!-- Panel 3: Future -->
+            <div class="panel" id="panel-future" data-panel="future">
+                <div class="quote-layer">
+                    <p>"They took away our culture, and lo and behold they took away our lake."</p>
+                </div>
+                <div class="puzzle-grid" id="grid-future"></div>
+                <div class="panel-title">The Vanishing Fridge</div>
+                <div class="panel-subtitle">Future</div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p class="land-acknowledgment">
+                Created on Stó:lō Tém:éxw, the unceded territory of the Máthxwi First Nation and the Semá:th First
+                Nation.
+            </p>
+        </footer>
+    </div>
+
+    <!-- Completion Screen -->
+    <div id="completion-screen" class="completion-screen hidden">
+        <div class="completion-content">
+            <h2>The Truth Revealed</h2>
+
+            <blockquote class="full-quote">
+                "The lake was, I don't know what you'd call it, our fridge I guess.
+                It meant everything to our people. They took away
+                our culture, and lo and behold they took away our lake."
+                <cite>- Ray Silver, Elder of the Semá:th (Sumas) First Nation<br><span
+                        style="font-size: 0.7em; opacity: 0.7;">Vancouver Sun, 2013</span></cite>
+            </blockquote>
+
+            <div class="triptych-gallery">
+                <div class="triptych-image">
+                    <img src="fridge_past.jpg" alt="The Living Fridge (Past)">
+                    <span>Past</span>
+                </div>
+                <div class="triptych-image">
+                    <img src="fridge_present.jpg" alt="The Deserted Fridge (Present)">
+                    <span>Present</span>
+                </div>
+                <div class="triptych-image">
+                    <img src="fridge_future.jpg" alt="The Vanishing Fridge (Future)">
+                    <span>Future</span>
+                </div>
+            </div>
+
+            <p class="reflection">
+                Sumas Lake was drained in the 1920s for settler agricultural expansion.<br>
+                What was stolen once may be stolen again.<br>
+                What will you remember? What will you resist?
+            </p>
+
+            <div class="completion-actions">
+                <a href="mailto:hello@averylakeofficial.com?subject=Enquiry%20About%20Stolen%20Fridge%20Triptych%20Prints"
+                    class="cta-btn">Enquire About Prints</a>
+                <a href="https://gallery.averylakeofficial.com" target="_blank" class="secondary-btn">Explore
+                    Gallery</a>
+                <button id="restart-btn" class="restart-btn">Experience Again</button>
+            </div>
+
+            <p class="credit">
+                <a href="https://averylakeofficial.com" target="_blank">The Art of Avery Lake</a>
+            </p>
+
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
